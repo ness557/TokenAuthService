@@ -1,0 +1,19 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+    password: norepqw2
+    driver-class-name: org.postgresql.Driver
+
+token:
+  secret: mysecrettoken
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: ERROR
