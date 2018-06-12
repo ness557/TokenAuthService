@@ -52,6 +52,4 @@ public class MyUserDetailService implements UserDetailsService {
                 .map(n -> new SimpleGrantedAuthority(StringUtils.deleteWhitespace(n)))
                 .collect(Collectors.toList());
     }
-
-
 }

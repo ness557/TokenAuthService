@@ -1,6 +1,5 @@
 package simple.microservices.tokenauthservice.model;
 
-
 import lombok.*;
 
 import javax.persistence.*;

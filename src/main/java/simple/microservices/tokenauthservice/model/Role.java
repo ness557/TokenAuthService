@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 @XmlRootElement
-@Getter @Setter @NoArgsConstructor @ToString //@EqualsAndHashCode
+@Getter @Setter @NoArgsConstructor @ToString
 public class Role implements Serializable {
 
     @Id
