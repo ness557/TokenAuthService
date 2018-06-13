@@ -2,16 +2,16 @@ package simple.microservices.tokenauthservice.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
-import simple.microservices.tokenauthservice.model.User;
+import simple.microservices.tokenauthservice.model.Role;
 
 import java.util.List;
 
 @Transactional
-public interface UserCrudRepository extends CrudRepository<User, Integer> {
+public interface RoleCrudRepository extends CrudRepository<Role, Integer> {
 
-    User getById(int id);
-    List<User> findAll();
+    Role getById(Integer id);
+    List<Role> findAll();
+    Role findByName(String name);
     boolean existsById(int id);
     void deleteById(int id);
-    User findByUsername(String username);
 }

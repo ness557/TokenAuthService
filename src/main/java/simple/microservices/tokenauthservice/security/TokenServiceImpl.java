@@ -1,8 +1,6 @@
 package simple.microservices.tokenauthservice.security;
 
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,20 +71,28 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public User getUser(String token) {
-        logger.info("Trying to get user by token");
-        Map<String, Object> tokenData =
-                (Map) Jwts.parser().setSigningKey(secret).parse(token).getBody();
 
-        List authorities =  (List) ((List) tokenData.get("authorities")).stream()
-                .map(n -> new SimpleGrantedAuthority(
-                        ((Map) n).get("authority").toString()))
-                .collect(Collectors.toList());
+        Map<String, Object> tokenData;
+        try {
+            tokenData = (Map) Jwts.parser().setSigningKey(secret).parse(token).getBody();
+        } catch (Exception e) {
+            logger.info("Wrong token");
+            return null;
+        }
 
-        if (ObjectUtils.allNotNull(tokenData))
-            return new User(
-                    tokenData.get("username").toString(),
-                    tokenData.get("password").toString(),
-                    authorities);
-        return null;
+        if(tokenData == null){
+            logger.info("token is empty");
+            return null;
+        }
+
+        User user = (User) userService.loadUserByUsername(((String) tokenData.get("username")));
+
+        if(!user.getPassword().equals(tokenData.get("password"))){
+            logger.info("wrong credits");
+            return null;
+        }
+
+        return user;
+
     }
 }

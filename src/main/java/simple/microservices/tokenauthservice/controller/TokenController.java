@@ -32,18 +32,17 @@ public class TokenController {
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     public ResponseEntity<JSONObject> getUser(@RequestParam String token) {
 
-        try {
-            User user = tokenService.getUser(token);
-            Map<String, String> map = new HashMap();
+        User user = tokenService.getUser(token);
+
+        if (user != null) {
+            Map<String, String> map = new HashMap<>();
             map.put("username", user.getUsername());
             map.put("password", user.getPassword());
             map.put("authorities", user.getAuthorities().toString());
 
             return new ResponseEntity<>(new JSONObject(map), HttpStatus.OK);
-        } catch (MalformedJwtException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getToken", method = RequestMethod.GET)
@@ -56,7 +55,7 @@ public class TokenController {
         } catch (AuthenticationException e) {
             e.printStackTrace();
 
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
